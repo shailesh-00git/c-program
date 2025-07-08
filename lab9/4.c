@@ -1,20 +1,19 @@
-// To find the reverse of a number using recursive function
+// Write a program to display the reverse of any number using recursive function.
 #include <stdio.h>
-int reverse(int n)
+
+int rev(int n)
 {
-  static int rev = 0;
+  static int r = 0; // static variable to accumulate the reverse
   if (n == 0)
-    return rev;
-  else
-  {
-    int d = n%10;
-    rev = rev * 10 + d;
-    return reverse(n / 10);
-  }
+    return r;
+  r = r * 10 + n % 10;
+  return rev(n / 10);
 }
+
 int main()
 {
-  int n = 123;
-  printf("Reverse of %d is %d\n", n, reverse(n));
+  int a = 123;
+
+  printf("Reverse is %d\n", rev(a));
   return 0;
 }
