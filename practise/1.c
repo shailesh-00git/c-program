@@ -1,28 +1,41 @@
+// to input ages of 30 people and find the lecond largest age
 #include <stdio.h>
 int main()
 {
-  int a[2][2], b[2][2], i, j;
-  for (i = 0; i < 2; i++)
+  int a[30], i, large, slarge;
+  printf("Enter the age of 30 people: \n");
+  for (i = 0; i < 5; i++)
   {
-    for (j = 0; j < 2; j++)
+    scanf("%d", &a[i]);
+  }
+
+  // find large and second large
+  if (a[0] > a[i])
+  {
+    large = a[0];
+    slarge = a[1];
+  }
+  else
+  {
+    large = a[1];
+    slarge = a[0];
+  }
+
+  // main logic
+
+  for (i = 2; i < 5; i++) // loop start leftin first two element
+  {
+    if (a[i] > large)
     {
-      scanf("%d", &a[i][j]);
+      slarge = large;
+      large = a[i];
+    }
+    else if (a[i] > slarge && a[i] != large)
+    {
+      slarge = a[i];
     }
   }
-  for (i = 0; i < 2; i++)
-  {
-    for (j = 0; j < 2; j++)
-    {
-      scanf("%d", &b[i][j]);
-    }
-  }
-  for (i = 0; i < 2; i++)
-  {
-    for (j = 0; j < 2; j++)
-    {
-      printf("%d\t", a[i][j] + b[i][j]);
-    }
-    printf("\n");
-  }
+
+  printf("slarge = %d", slarge);
   return 0;
 }
