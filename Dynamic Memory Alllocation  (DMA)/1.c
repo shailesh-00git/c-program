@@ -1,4 +1,4 @@
-// to display the elements of a array insig DMA
+// to display the elements of a array using DMA
 #include <stdio.h>
 #include <stdlib.h>
 
