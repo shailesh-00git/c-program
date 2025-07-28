@@ -1,4 +1,4 @@
-// to compare to strings
+// to compare to strings using user definedd function
 #include <stdio.h>
 #include <string.h>
 void scomp(char name1[20], char name2[20])
