@@ -1,1 +1,2 @@
-This is my first program in file handling
+Name = shailesh
+Id = 322
