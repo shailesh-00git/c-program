@@ -1,209 +1,336 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include <string.h>
 
-struct student
+// structure for storing date of birth
+struct dob
 {
-  char f_name[20];
-  char l_name[20];
-  char roll[15];
-  char dob[15];
-  char mobile[15];
-  char email[30];
-  char address[50];
-  char course[20];
-  char branch[20];
-  char parent_name[30];
-  char parent_contact[15];
+    int day;
+    int month;
+    int year;
 };
 
-// ####### to convert into uppercase the course, roll number########
-void to_uppercase(char *str)
+// structure for storing the student data
+struct student
 {
-  for (int i = 0; str[i] != '\0'; i++)
-  {
-    if (str[i] >= 'a' && str[i] <= 'z')
-    {
-      str[i] -= 32; // Convert lowercase to uppercase
-    }
-  }
-}
-// #####Capatalize the first letter of name and last name#######
-void capitalize_name(char *str)
-{
-  if (str[0] >= 'a' && str[0] <= 'z')
-  {
-    str[0] -= 32; // Make first letter uppercase
-  }
-  for (int i = 1; str[i] != '\0'; i++)
-  {
-    if (str[i] >= 'A' && str[i] <= 'Z')
-    {
-      str[i] += 32; // Make rest lowercase
-    }
-  }
-}
+    char firstName[25];
+    char lastName[25];
+    char roll[20];
+    char mobile[15];
+    char email[40];
+    char course[30];
+    struct dob birthDate;  // date of birth structure
+};
 
-// ######### capatalize addtess ############
-void capitalize_address(char *str)
-{
-  int capitalizeNext = 1; // capitalize first letter and letters after commas
-
-  for (int i = 0; str[i] != '\0'; i++)
-  {
-    if (capitalizeNext && str[i] >= 'a' && str[i] <= 'z')
-    {
-      str[i] -= 32; // convert to uppercase
-      capitalizeNext = 0;
-    }
-    else if (str[i] == ',')
-    {
-      capitalizeNext = 1; // next letter after comma should be capitalized
-    }
-    else if (str[i] != ' ')
-    {
-      capitalizeNext = 0; // normal letters after first letter or comma
-    }
-  }
-}
-// capatilize the parents name
-void capitalize_full_name(char *str)
-{
-  int capitalizeNext = 1; // capitalize first letter and letters after spaces
-
-  for (int i = 0; str[i] != '\0'; i++)
-  {
-    if (capitalizeNext && str[i] >= 'a' && str[i] <= 'z')
-    {
-      str[i] -= 32; // convert to uppercase
-      capitalizeNext = 0;
-    }
-    else if (str[i] == ' ')
-    {
-      capitalizeNext = 1; // next letter after space should be capitalized
-    }
-    else
-    {
-      capitalizeNext = 0; // normal letters after first letter or space
-    }
-  }
-}
-
-// ####################################
 void add(void);
+void view(void);
+void search(void);
+void modify(void);
+void delete_record(void);
 
 int main()
 {
-  int choice = 0;
+    int choice = 0;
 
-  while (choice != 6)
-  {
-    system("cls"); // only works in CMD
-    printf("################## STUDENT DATABASE MANAGEMENT #####################\n");
-    printf("1. Add student Record\n");
-    printf("2. View Student Details\n");
-    printf("3. Search Student\n");
-    printf("4. Modify Student Record\n");
-    printf("5. Delete Student Record\n");
-    printf("6. Exit\n");
-    printf("_____________________________________________________________________\n");
-    printf("Enter your choice: ");
-    scanf("%d", &choice);
-
-    switch (choice)
+    while (choice != 6)
     {
-    case 1:
-      add();
-      break;
-    case 6:
-      printf("Exiting program.\n");
-      break;
-    default:
-      printf("Invalid choice. Press Enter to continue...");
-      getchar(); // to pause
-      getchar();
-    }
-  }
+        system("cls");
+        printf("################## STUDENT DATABASE MANAGEMENT #####################\n");
+        printf("\n1. Add Student Record\n");
+        printf("2. View Student Details\n");
+        printf("3. Search Student\n");
+        printf("4. Modify Student Record\n");
+        printf("5. Delete Student Record\n");
+        printf("6. Exit\n");
+        printf("_____________________________________________________________________\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-  return 0;
+        switch (choice)
+        {
+        case 1:
+            add();
+            break;
+        case 2:
+            view();
+            break;
+        case 3:
+            search();
+            break;
+        case 4:
+            modify();
+            break;
+        case 5:
+            delete_record();
+            break;
+        case 6:
+            printf("Exiting program.\n");
+            break;
+        default:
+            printf("Invalid choice. Press Enter to continue...");
+            getchar();
+            getchar();
+        }
+    }
+
+    return 0;
 }
 
+// add function
 void add()
 {
-  FILE *fp;
-  char another = 'y';
+    FILE *fp;
+    char another = 'y';
+    struct student s;
 
-  struct student info;
+    fp = fopen("abc.txt", "a");
+    if (fp == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
 
-  fp = fopen("studentsinfo.txt", "a");
-  if (fp == NULL)
-  {
-    printf("Error opening file!\n");
-    return;
-  }
+    do
+    {
+        system("cls");
+        printf("======== ADD STUDENT INFORMATION ========\n");
 
-  do
-  {
+        printf("First Name: ");
+        scanf("%s", s.firstName);
+        printf("Last Name: ");
+        scanf("%s", s.lastName);
+        printf("Roll Number: ");
+        scanf("%s", s.roll);
+        printf("Mobile Number: ");
+        scanf("%s", s.mobile);
+        printf("Email Address: ");
+        scanf("%s", s.email);
+        printf("Course: ");
+        scanf("%s", s.course);
+
+        printf("Enter date of birth (day month year): ");
+        scanf("%d %d %d", &s.birthDate.day, &s.birthDate.month, &s.birthDate.year);
+
+        fprintf(fp, "%s %s %s %s %s %s %d %d %d\n",
+                s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+                s.birthDate.day, s.birthDate.month, s.birthDate.year);
+
+        printf("\nStudent record added successfully!\n");
+        printf("Do you want to add another record? (y/n): ");
+        scanf(" %c", &another);
+    } while (another == 'y' || another == 'Y');
+
+    fclose(fp);
+}
+
+// view function
+void view()
+{
+    FILE *fp;
+    struct student s;
+
+    fp = fopen("abc.txt", "r");
+    if (fp == NULL)
+    {
+        printf("\nFile cannot be opened.\n");
+        exit(0);
+    }
+
     system("cls");
-    printf("======== ADD STUDENT INFORMATION ========\n");
+    printf("========== VIEW STUDENT RECORDS ==========\n\n");
 
-    printf("First name: ");
-    scanf("%s", info.f_name);
-    capitalize_name(info.f_name);
+    printf("--------------------------------------------------------------------------------\n");
+    printf("Name\t\tRoll No\tMobile\t\tEmail\t\t\tCourse\tDate of Birth\n");
+    printf("--------------------------------------------------------------------------------\n");
 
-    printf("Last name: ");
-    scanf("%s", info.l_name);
-    capitalize_name(info.l_name);
+    while (fscanf(fp, "%s %s %s %s %s %s %d %d %d",
+                  s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+                  &s.birthDate.day, &s.birthDate.month, &s.birthDate.year) != EOF)
+    {
+        printf("%s %s\t%s\t%s\t%s\t%s\t%d-%02d-%02d\n",
+               s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+               s.birthDate.day, s.birthDate.month, s.birthDate.year);
+    }
 
-    printf("Roll Number: ");
-    scanf("%s", info.roll);
-    to_uppercase(info.roll);
+    fclose(fp);
+    printf("\nPress any key to return...");
+    getch();
+}
 
-    printf("Date of Birth (DD-MM-YYYY): ");
-    scanf("%s", info.dob);
+// search function
+void search()
+{
+    FILE *fp;
+    struct student s;
+    char r[20];
+    int found = 0;
 
-    printf("Mobile Number: ");
-    scanf("%s", info.mobile);
+    fp = fopen("abc.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error opening file.\n");
+        exit(1);
+    }
 
-    printf("Email: ");
-    scanf("%s", info.email);
+    system("cls");
+    printf("======== SEARCH STUDENT INFORMATION ========\n");
 
-    printf("Address: ");
-    scanf(" %[^\n]", info.address); // accepts full address with spaces
-    capitalize_address(info.address);
+    printf("\nEnter roll number to search: ");
+    scanf("%s", r);
 
-    printf("Course: ");
-    scanf("%s", info.course);
-    to_uppercase(info.course);
+    while (fscanf(fp, "%s %s %s %s %s %s %d %d %d",
+                  s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+                  &s.birthDate.day, &s.birthDate.month, &s.birthDate.year) != EOF)
+    {
+        if (strcmp(s.roll, r) == 0)
+        {
+            printf("\nRecord Found:\n");
+            printf("Name: %s %s\n", s.firstName, s.lastName);
+            printf("Roll: %s\n", s.roll);
+            printf("Mobile: %s\n", s.mobile);
+            printf("Email: %s\n", s.email);
+            printf("Course: %s\n", s.course);
+            printf("Date of Birth: %d-%02d-%02d\n", s.birthDate.day, s.birthDate.month, s.birthDate.year);
+            found = 1;
+            break;
+        }
+    }
 
-    printf("Branch: ");
-    scanf("%s", info.branch);
-    capitalize_name(info.branch);
+    if (!found)
+        printf("\nStudent with Roll No. %s not found.\n", r);
 
-    printf("Parent's Name: ");
-    scanf(" %[^\n]", info.parent_name);
-    capitalize_full_name(info.parent_name);
+    fclose(fp);
+    printf("\nPress any key to return...");
+    getch();
+}
 
-    printf("Parent's Contact Number: ");
-    scanf("%s", info.parent_contact);
+// modify function
+void modify()
+{
+    FILE *fp, *temp;
+    struct student s;
+    char r[20];
+    int found = 0;
 
-    fprintf(fp, "Name: %s %s\n", info.f_name, info.l_name);
-    fprintf(fp, "Roll No: %s\n", info.roll);
-    fprintf(fp, "DOB: %s\n", info.dob);
-    fprintf(fp, "Mobile: %s\n", info.mobile);
-    fprintf(fp, "Email: %s\n", info.email);
-    fprintf(fp, "Course: %s\n", info.course);
-    fprintf(fp, "Branch: %s\n", info.branch);
-    fprintf(fp, "Parent Name: %s\n", info.parent_name);
-    fprintf(fp, "Parent Contact: %s\n", info.parent_contact);
-    fprintf(fp, "Address: %s\n", info.address);
-    fprintf(fp, "--------------------------\n");
-    printf("\n");
-    printf("*******Student record added successfully!*******\n");
+    fp = fopen("abc.txt", "r");
+    temp = fopen("temp.txt", "w");
 
-    printf("Do you want to add another record? (y/n): ");
-    scanf(" %c", &another); // space before %c clears newline
-  } while (another == 'y' || another == 'Y');
+    if (fp == NULL || temp == NULL)
+    {
+        printf("Error opening file.\n");
+        return;
+    }
 
-  fclose(fp);
+    system("cls");
+    printf("======== MODIFY STUDENT INFORMATION ========\n");
+
+    printf("\nEnter roll number to modify: ");
+    scanf("%s", r);
+
+    while (fscanf(fp, "%s %s %s %s %s %s %d %d %d",
+                  s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+                  &s.birthDate.day, &s.birthDate.month, &s.birthDate.year) != EOF)
+    {
+        if (strcmp(s.roll, r) == 0)
+        {
+            found = 1;
+            printf("\nExisting record:\n");
+            printf("Name: %s %s\n", s.firstName, s.lastName);
+            printf("Roll: %s\n", s.roll);
+            printf("Mobile: %s\n", s.mobile);
+            printf("Email: %s\n", s.email);
+            printf("Course: %s\n", s.course);
+            printf("Date of Birth: %d-%02d-%02d\n", s.birthDate.day, s.birthDate.month, s.birthDate.year);
+
+            printf("\nEnter new First Name: ");
+            scanf("%s", s.firstName);
+            printf("Enter new Last Name: ");
+            scanf("%s", s.lastName);
+            printf("Enter new Roll Number: ");
+            scanf("%s", s.roll);
+            printf("Enter new Mobile Number: ");
+            scanf("%s", s.mobile);
+            printf("Enter new Email: ");
+            scanf("%s", s.email);
+            printf("Enter new Course: ");
+            scanf("%s", s.course);
+            printf("Enter new date of birth (day month year): ");
+            scanf("%d %d %d", &s.birthDate.day, &s.birthDate.month, &s.birthDate.year);
+        }
+
+        fprintf(temp, "%s %s %s %s %s %s %d %d %d\n",
+                s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+                s.birthDate.day, s.birthDate.month, s.birthDate.year);
+    }
+
+    fclose(fp);
+    fclose(temp);
+
+    remove("abc.txt");
+    rename("temp.txt", "abc.txt");
+
+    if (found)
+        printf("\nRecord modified successfully.\n");
+    else
+        printf("\nRecord not found.\n");
+
+    printf("\nPress any key to return...");
+    getch();
+}
+
+// delete function
+void delete_record()
+{
+    FILE *fp, *temp;
+    struct student s;
+    char r[20];
+    int found = 0;
+
+    fp = fopen("abc.txt", "r");
+    temp = fopen("temp.txt", "w");
+
+    if (fp == NULL || temp == NULL)
+    {
+        printf("Error opening file.\n");
+        return;
+    }
+
+    system("cls");
+    printf("======== DELETE STUDENT INFORMATION ========\n");
+
+    printf("Enter roll number to delete: ");
+    scanf("%s", r);
+
+    while (fscanf(fp, "%s %s %s %s %s %s %d %d %d",
+                  s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+                  &s.birthDate.day, &s.birthDate.month, &s.birthDate.year) != EOF)
+    {
+        if (strcmp(s.roll, r) == 0)
+        {
+            found = 1;
+            printf("\nDeleted Record:\n");
+            printf("Name: %s %s\n", s.firstName, s.lastName);
+            printf("Roll: %s\n", s.roll);
+            continue; // skip writing this record
+        }
+
+        fprintf(temp, "%s %s %s %s %s %s %d %d %d\n",
+                s.firstName, s.lastName, s.roll, s.mobile, s.email, s.course,
+                s.birthDate.day, s.birthDate.month, s.birthDate.year);
+    }
+
+    fclose(fp);
+    fclose(temp);
+
+    remove("abc.txt");
+    rename("temp.txt", "abc.txt");
+
+    if (found)
+        printf("\n!!!!! Record deleted successfully !!!!!\n");
+    else
+        printf("\nRecord not found.\n");
+
+    printf("\nPress any key to return...");
+    getch();
 }
