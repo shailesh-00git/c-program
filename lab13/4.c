@@ -10,17 +10,18 @@ struct employe
 };
 int main()
 {
-  struct employe b[4];
+  struct employe b[50];
   FILE *fp;
+  char choice;
+  int i=0;
   fp = fopen("employe.txt", "w");
   if (fp == NULL)
   {
     printf("Error");
     exit(0);
   }
-  for (int i = 0; i < 3; i++)
+  do
   {
-
     printf("Enter the name: ");
     scanf("%s", b[i].name);
     printf("Enter age : ");
@@ -28,10 +29,13 @@ int main()
     printf("Enter salary :");
     scanf("%d", &b[i].salary);
     fprintf(fp, "%s %d %d\n", b[i].name, b[i].age, b[i].salary);
-  }
+    printf("Enter more employes detail (y/n): ");
+    scanf(" %c", &choice);
+    i++;
+  } while (choice == 'y' || choice == 'Y');
   printf("File added sucessfully\n");
   fclose(fp);
-  struct employe b1[4];
+  struct employe b1[i];
   int total = 0;
   fp = fopen("employe.txt", "r");
   for (int i = 0; i < 3; i++)
